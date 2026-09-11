@@ -1,222 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event Planners — Track Vendor Commitments Without Constant Chasing</title>
-  <meta name="description" content="A practical digital system for event planners to track vendor commitments, deadlines, confirmations and follow-ups without constant chasing." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --ink:#0d1a2b;
-      --muted:#5f6671;
-      --sand:#b3966d;
-      --blush:#f7ebe7;
-      --blush-2:#fff8f5;
-      --line:#e8ddd7;
-      --white:#fff;
-      --shadow:0 20px 50px rgba(35,26,21,.12);
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
-    img{max-width:100%;display:block}
-    a{text-decoration:none;color:inherit}
-    .container{width:min(1120px,calc(100% - 40px));margin:auto}
-    .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,221,215,.75)}
-    .nav-inner{height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .brand{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;letter-spacing:-.02em}
-    .nav-links{display:flex;align-items:center;gap:28px;font-size:14px;color:#394150}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border-radius:999px;font-weight:700;transition:.2s ease;border:1px solid transparent}
-    .btn-primary{background:var(--ink);color:#fff;box-shadow:0 10px 24px rgba(13,26,43,.18)}
-    .btn-primary:hover{transform:translateY(-2px)}
-    .btn-outline{border-color:var(--ink);background:#fff}
-    .hero{padding:72px 0 70px;background:linear-gradient(135deg,#fff 0%,#fff8f5 58%,#f5e5df 100%)}
-    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:64px;align-items:center}
-    .eyebrow{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;color:#705d49;font-size:13px;font-weight:700;margin-bottom:20px}
-    h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.08;margin:0 0 18px}
-    h1{font-size:clamp(48px,7vw,78px);letter-spacing:-.045em}
-    h2{font-size:clamp(34px,4.7vw,52px);letter-spacing:-.035em}
-    h3{font-size:25px}
-    .hero p{font-size:19px;color:var(--muted);max-width:620px;margin:0 0 28px}
-    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 22px}
-    .micro{font-size:13px;color:#6b7280}
-    .cover-wrap{position:relative}
-    .cover-card{background:#fff;padding:14px;border-radius:28px;box-shadow:var(--shadow);transform:rotate(1.2deg);border:1px solid #f0e5df}
-    .cover-card img{border-radius:19px}
-    .float-note{position:absolute;left:-34px;bottom:36px;background:#fff;padding:14px 16px;border-radius:16px;box-shadow:0 15px 35px rgba(29,22,18,.14);font-weight:700;font-size:14px;border:1px solid #eee1da}
-    section{padding:88px 0}
-    .center{text-align:center;max-width:780px;margin:0 auto 44px}
-    .center p{color:var(--muted);font-size:18px}
-    .problem-grid,.feature-grid,.outcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-    .card{border:1px solid var(--line);border-radius:22px;padding:28px;background:#fff;box-shadow:0 10px 26px rgba(28,20,15,.04)}
-    .icon{width:48px;height:48px;border-radius:14px;background:var(--blush);display:grid;place-items:center;font-size:22px;margin-bottom:18px}
-    .card p{margin:0;color:var(--muted)}
-    .how{background:var(--blush-2)}
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:step}
-    .step{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;min-height:205px}
-    .step:before{counter-increment:step;content:counter(step);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ink);color:#fff;font-weight:700;margin-bottom:18px}
-    .step p{color:var(--muted);margin:0}
-    .split{display:grid;grid-template-columns:1fr 1fr;gap:58px;align-items:center}
-    .checklist{display:grid;gap:14px;margin-top:24px}
-    .check{display:flex;gap:12px;align-items:flex-start}
-    .check b{display:grid;place-items:center;min-width:26px;height:26px;border-radius:50%;background:#edf4ee;color:#55705a;font-size:14px}
-    .check span{color:#4f5661}
-    .mock{border-radius:28px;padding:28px;background:linear-gradient(160deg,#f9ece7,#fff);border:1px solid var(--line);box-shadow:var(--shadow)}
-    .vendor-row{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:12px;padding:14px 0;border-bottom:1px solid #eadfd9;font-size:14px;align-items:center}
-    .status{justify-self:start;padding:6px 10px;border-radius:999px;background:#edf4ee;color:#4f6f56;font-size:12px;font-weight:700}
-    .deadline{color:#9b6a49;font-weight:700}
-    .testimonial{background:var(--ink);color:#fff;border-radius:30px;padding:42px;text-align:center}
-    .testimonial p{font-family:'Playfair Display',serif;font-size:30px;line-height:1.35;margin:0 auto 16px;max-width:800px}
-    .testimonial small{color:#c4c8cf}
-    .cta{padding-top:25px}
-    .cta-box{padding:54px;border-radius:32px;background:linear-gradient(135deg,#0d1a2b,#18273c);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:30px}
-    .cta-box p{color:#d5d8dd;margin:8px 0 0}
-    footer{padding:34px 0 48px;color:#737985;font-size:13px}
-    .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;border-top:1px solid var(--line);padding-top:28px}
-    @media(max-width:900px){
-      .nav-links a:not(.btn){display:none}
-      .hero-grid,.split{grid-template-columns:1fr}
-      .hero{padding-top:48px}
-      .cover-wrap{max-width:650px;margin:auto}
-      .problem-grid,.feature-grid,.outcome-grid{grid-template-columns:1fr 1fr}
-      .steps{grid-template-columns:1fr 1fr}
-      .float-note{left:10px}
-    }
-    @media(max-width:620px){
-      .container{width:min(100% - 28px,1120px)}
-      .nav-inner{height:66px}
-      .nav .btn{padding:11px 15px;font-size:13px}
-      h1{font-size:48px}
-      .hero p{font-size:17px}
-      .problem-grid,.feature-grid,.outcome-grid,.steps{grid-template-columns:1fr}
-      section{padding:68px 0}
-      .cta-box{padding:34px 26px;display:block}
-      .cta-box .btn{margin-top:22px;width:100%}
-      .footer-inner{display:block}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Planners Tracking Vendor Commitments Without Constant Chasing</title>
+<meta name="description" content="A practical system for event planners to track vendor commitments, deadlines, approvals and follow-ups without relying on memory or scattered threads.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2428;--rust:#9a4f3b;--cream:#fbf7f1;--muted:#687078;--line:#e7ddd4;--green:#4f755e;--amber:#b17838;--red:#a84d47}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'DM Sans',sans-serif;background:#fff;color:var(--ink);line-height:1.62}a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}
+nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-family:'Playfair Display';font-weight:700;font-size:20px}.links{display:flex;gap:24px;align-items:center;font-size:14px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:13px 20px;font-weight:700;border:1px solid var(--ink);transition:.2s}.btn.dark{background:var(--ink);color:#fff}.btn:hover{transform:translateY(-2px)}
+.hero{background:linear-gradient(135deg,#fff 0%,var(--cream) 60%,#ead8c8 100%);padding:72px 0 82px}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:62px;align-items:center}.kicker{display:inline-block;padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:white;color:var(--rust);font-weight:700;font-size:13px;margin-bottom:18px}h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.08;margin:0 0 16px}h1{font-size:clamp(46px,7vw,76px);letter-spacing:-.04em}h2{font-size:clamp(34px,5vw,50px)}h3{font-size:24px}.hero p{font-size:19px;color:var(--muted);max-width:680px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 14px}.note{font-size:13px;color:#7b8288}.book{background:white;border:1px solid var(--line);border-radius:26px;padding:14px;box-shadow:0 24px 60px rgba(67,46,36,.16);transform:rotate(1deg)}.book img{width:100%;display:block;border-radius:18px}
+section{padding:82px 0}.center{text-align:center;max-width:780px;margin:0 auto 42px}.center p{color:var(--muted);font-size:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card{border:1px solid var(--line);border-radius:22px;padding:26px;background:white;box-shadow:0 8px 26px rgba(30,30,30,.04)}.card p{color:var(--muted);margin:0}.band{background:var(--cream)}.four{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.field{background:#fff;border:1px solid var(--line);padding:24px;border-radius:20px}.num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fff;font-weight:700;margin-bottom:16px}.split{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:center}.checklist{display:grid;gap:12px;margin-top:22px}.check{display:flex;gap:10px;align-items:flex-start;color:#555e65}.check b{color:var(--rust)}
+.trigger{background:#1f292d;color:#fff;border-radius:30px;padding:38px}.trigger-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}.trigger-item{background:rgba(255,255,255,.08);padding:20px;border-radius:18px}.trigger-item span{display:block;color:#d8dddf;font-size:14px}.rag{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.rag .card{border-top:5px solid}.rag .green{border-top-color:var(--green)}.rag .amber{border-top-color:var(--amber)}.rag .red{border-top-color:var(--red)}.workbook{background:linear-gradient(135deg,#f8eee8,#fff);border:1px solid var(--line);border-radius:26px;padding:32px}.rows{display:grid;gap:10px;margin-top:18px}.row{display:grid;grid-template-columns:1.2fr .9fr .9fr .9fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}.final{padding-top:28px}.cta{background:linear-gradient(135deg,#1d2428,#313b40);color:white;border-radius:30px;padding:50px;display:flex;align-items:center;justify-content:space-between;gap:28px}.cta p{color:#d7dcdf;margin:8px 0 0}footer{padding:30px 0 46px;color:#7b8288;font-size:13px}
+@media(max-width:900px){.links a:not(.btn){display:none}.hero-grid,.split{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}.four{grid-template-columns:1fr 1fr}.trigger-grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.grid3,.four,.trigger-grid,.rag{grid-template-columns:1fr}h1{font-size:45px}section{padding:64px 0}.cta{display:block;padding:34px 26px}.cta .btn{width:100%;margin-top:20px}.row{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <div class="brand">Organized Events</div>
-      <div class="nav-links">
-        <a href="#what">What You Get</a>
-        <a href="#how">How It Works</a>
-        <a href="#inside">Inside</a>
-        <a class="btn btn-primary" href="https://whop.com/event-planners-tracking-vendor-commitments-without-constant/event-planners-tracking-vendor-commitments-without-constant-chasing/" target="_blank" rel="noopener">Get the Guide</a>
-      </div>
-    </div>
-  </nav>
-
-  <header class="hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="eyebrow">✓ Built for busy event planners</div>
-        <h1>Track Vendor Commitments Without Constant Chasing</h1>
-        <p>A practical digital system for keeping vendor promises, deadlines, confirmations, deposits, deliverables, and follow-ups visible — so you can spend less time chasing and more time creating.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="https://whop.com/event-planners-tracking-vendor-commitments-without-constant/event-planners-tracking-vendor-commitments-without-constant-chasing/" target="_blank" rel="noopener">Access on Whop →</a>
-          <a class="btn btn-outline" href="#inside">See what’s inside</a>
-        </div>
-        <div class="micro">Instant digital access via Whop • Designed for planners coordinating multiple vendors</div>
-      </div>
-      <div class="cover-wrap">
-        <div class="cover-card"><img src="assets/cover.jpg" alt="Event planners tracking vendor commitments cover"></div>
-        <div class="float-note">Plan • Coordinate • Deliver</div>
-      </div>
-    </div>
-  </header>
-
-  <section id="what">
-    <div class="container">
-      <div class="center">
-        <h2>Your vendor follow-up system, simplified.</h2>
-        <p>Stop keeping critical commitments scattered across inboxes, chats, notes and memory. Use one repeatable process to know what was promised, what is due, and what needs attention next.</p>
-      </div>
-      <div class="problem-grid">
-        <div class="card"><div class="icon">📩</div><h3>Less chasing</h3><p>Turn repetitive “just checking in” messages into scheduled, intentional follow-ups based on clear status and due dates.</p></div>
-        <div class="card"><div class="icon">📅</div><h3>Clear deadlines</h3><p>Keep deposits, confirmations, setup windows, production details and delivery dates visible in one planning flow.</p></div>
-        <div class="card"><div class="icon">✅</div><h3>Fewer surprises</h3><p>Spot missing commitments early — before event week turns a small gap into a stressful last-minute problem.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="how" id="how">
-    <div class="container">
-      <div class="center"><h2>A simple workflow you can repeat for every event.</h2><p>Use the same structure whether you are managing five vendors or fifty.</p></div>
-      <div class="steps">
-        <div class="step"><h3>Capture</h3><p>Record what each vendor has agreed to provide, the exact deliverable, and the person responsible.</p></div>
-        <div class="step"><h3>Date</h3><p>Attach the promised date, payment milestone, confirmation date, or event-day deadline.</p></div>
-        <div class="step"><h3>Track</h3><p>Mark each commitment by status so you can see what is complete, pending, late, or blocked.</p></div>
-        <div class="step"><h3>Follow up</h3><p>Reach out only when the status or due date says you need to — not because you are worried you forgot something.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="inside">
-    <div class="container split">
-      <div>
-        <div class="eyebrow">What this helps you manage</div>
-        <h2>Build a calmer event-planning operating system.</h2>
-        <div class="checklist">
-          <div class="check"><b>✓</b><span><strong>Vendor confirmations</strong> — know who has formally confirmed and who still needs action.</span></div>
-          <div class="check"><b>✓</b><span><strong>Payments & deposits</strong> — keep key financial milestones tied to vendor delivery.</span></div>
-          <div class="check"><b>✓</b><span><strong>Production details</strong> — track setup times, quantities, technical needs and agreed specifications.</span></div>
-          <div class="check"><b>✓</b><span><strong>Follow-up timing</strong> — avoid over-messaging reliable vendors while catching risk early.</span></div>
-          <div class="check"><b>✓</b><span><strong>Event-week readiness</strong> — quickly see what is done, what is open, and what could become a problem.</span></div>
-        </div>
-      </div>
-      <div class="mock" aria-label="Example vendor tracker">
-        <h3 style="margin-bottom:8px">Vendor Commitment View</h3>
-        <p style="margin:0 0 14px;color:#6c7280">A simple visual example of the system.</p>
-        <div class="vendor-row"><strong>Catering</strong><span class="deadline">Due Sep 18</span><span class="status">Confirmed</span></div>
-        <div class="vendor-row"><strong>Venue</strong><span class="deadline">Due Sep 15</span><span class="status">Confirmed</span></div>
-        <div class="vendor-row"><strong>Photography</strong><span class="deadline">Due Sep 19</span><span class="status" style="background:#fff3e8;color:#99623c">Waiting</span></div>
-        <div class="vendor-row"><strong>Entertainment</strong><span class="deadline">Due Sep 17</span><span class="status">Confirmed</span></div>
-        <div class="vendor-row"><strong>Florals</strong><span class="deadline">Due Sep 20</span><span class="status" style="background:#fff0ef;color:#a1504d">Follow up</span></div>
-        <div class="vendor-row" style="border-bottom:0"><strong>Transport</strong><span class="deadline">Due Sep 21</span><span class="status">Confirmed</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section style="padding-top:30px">
-    <div class="container">
-      <div class="testimonial">
-        <p>“The goal isn’t to message vendors more. It’s to know exactly when a message is needed.”</p>
-        <small>Designed around organized events, clearer commitments, and calmer delivery.</small>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <div class="center"><h2>Ideal for planners who manage moving parts all day.</h2></div>
-      <div class="outcome-grid">
-        <div class="card"><h3>Freelance planners</h3><p>Keep multiple client events organized without relying on memory or buried chat threads.</p></div>
-        <div class="card"><h3>Wedding planners</h3><p>Manage venue, catering, décor, entertainment, transportation, photo/video and more.</p></div>
-        <div class="card"><h3>Corporate & agency teams</h3><p>Create clearer accountability across suppliers, production partners and internal stakeholders.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta">
-    <div class="container">
-      <div class="cta-box">
-        <div><h2 style="margin-bottom:8px">Less chasing. More creating.</h2><p>Get the digital guide and build a vendor follow-up system you can reuse for every event.</p></div>
-        <a class="btn" style="background:#fff;color:#0d1a2b;min-width:180px" href="https://whop.com/event-planners-tracking-vendor-commitments-without-constant/event-planners-tracking-vendor-commitments-without-constant-chasing/" target="_blank" rel="noopener">Get Access →</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container footer-inner">
-      <div>© 2026 Organized Events. All rights reserved.</div>
-      <div>This landing page links directly to the Whop product page.</div>
-    </div>
-  </footer>
-</body>
-</html>
+<nav><div class="wrap nav"><div class="brand">Vendor Coordination System</div><div class="links"><a href="#system">The System</a><a href="#inside">Inside</a><a href="#bonus">Bonus Tools</a><a class="btn dark" href="https://whop.com/event-planners-tracking-vendor-commitments-without-constant/event-planners-tracking-vendor-commitments-without-constant-chasing/" target="_blank" rel="noopener">Get the Book</a></div></div></nav>
+<header class="hero"><div class="wrap hero-grid"><div><div class="kicker">For event planners managing multiple vendors</div><h1>Track Vendor Commitments Without Constant Chasing</h1><p>Turn scattered emails, texts, documents and memory into one visible coordination system. Know what is open, who owns the next move, when it is due, what the current status is, and what happens next.</p><div class="actions"><a class="btn dark" href="https://whop.com/event-planners-tracking-vendor-commitments-without-constant/event-planners-tracking-vendor-commitments-without-constant-chasing/" target="_blank" rel="noopener">Get Access on Whop →</a><a class="btn" href="#inside">See What You’ll Learn</a></div><div class="note">Practical framework • Includes checklists and worksheets</div></div><div class="book"><img alt="Event Planners Tracking Vendor Commitments Without Constant Chasing book cover" src="assets/cover.jpg"></div></div></header>
+<section><div class="wrap"><div class="center"><h2>Stop reconstructing the same story from five places.</h2><p>The core problem is fragmented coordination: one approval in email, one deadline in a text, one payment detail in a document, and one promise living only in memory.</p></div><div class="grid3"><div class="card"><h3>Less inbox archaeology</h3><p>Pull open commitments out of scattered threads so you can manage the item itself instead of repeatedly searching for context.</p></div><div class="card"><h3>Clear ownership</h3><p>Separate who must act from who is monitoring, so every item has one accountable next move.</p></div><div class="card"><h3>Follow-up with a reason</h3><p>Send messages because a status or deadline changed—not because silence makes you uneasy.</p></div></div></div></section>
+<section class="band" id="system"><div class="wrap"><div class="center"><h2>The Four Field Control Point</h2><p>Every active coordination item becomes manageable when four answers are visible without reopening the original thread.</p></div><div class="four"><div class="field"><div class="num">1</div><h3>Owner</h3><p>Who must move the item forward.</p></div><div class="field"><div class="num">2</div><h3>Due date</h3><p>When action or a decision is required.</p></div><div class="field"><div class="num">3</div><h3>Current status</h3><p>What is true right now.</p></div><div class="field"><div class="num">4</div><h3>Next step</h3><p>The next observable action.</p></div></div></div></section>
+<section id="inside"><div class="wrap split"><div><div class="kicker">Standardize real event work</div><h2>Five item types cover the coordination that usually slips.</h2><p style="color:var(--muted)">The book shows how to sort active work by what it actually needs, so a missing document does not get treated like a pending approval, and a production deadline does not get buried under routine chatter.</p><div class="checklist"><div class="check"><b>✓</b><span>Open questions</span></div><div class="check"><b>✓</b><span>Required documents</span></div><div class="check"><b>✓</b><span>Payment details</span></div><div class="check"><b>✓</b><span>Production deadlines</span></div><div class="check"><b>✓</b><span>Client approvals</span></div></div></div><div class="workbook"><h3>Controlled record example</h3><div class="rows"><div class="row"><strong>Item</strong><strong>Owner</strong><strong>Due</strong><strong>Status</strong></div><div class="row"><span>Floral palette approval</span><span>Client</span><span>Thu 3 PM</span><span>Waiting on client</span></div><div class="row"><span>Insurance certificate</span><span>Venue</span><span>Fri 12 PM</span><span>Awaiting document</span></div><div class="row"><span>Delivery window</span><span>Venue manager</span><span>Fri 11 AM</span><span>Waiting on reply</span></div></div></div></div></section>
+<section><div class="wrap"><div class="trigger"><h2>Follow-up has a trigger.</h2><p style="color:#d8dddf;max-width:760px">The book replaces generic “just checking in” behavior with a Message Trigger Sequence that ties communication to a specific condition.</p><div class="trigger-grid"><div class="trigger-item"><strong>1. Detect</strong><span>Spot the status change.</span></div><div class="trigger-item"><strong>2. Match</strong><span>Identify the trigger category.</span></div><div class="trigger-item"><strong>3. Decide</strong><span>Wait, ask, confirm, or escalate.</span></div><div class="trigger-item"><strong>4. Send</strong><span>Message only when the condition calls for it.</span></div></div></div></div></section>
+<section class="band"><div class="wrap"><div class="center"><h2>Red, Amber, Green—without guesswork.</h2><p>Risk becomes useful only when the color changes what you do next.</p></div><div class="rag"><div class="card green"><h3>Green</h3><p><strong>Current, owned, moving.</strong><br>Maintain the record and leave it alone unless the due date changes.</p></div><div class="card amber"><h3>Amber</h3><p><strong>Approaching risk.</strong><br>Prevent: send the targeted reminder, confirm the missing piece, or reset timing.</p></div><div class="card red"><h3>Red</h3><p><strong>Needs intervention now.</strong><br>Act: escalate, request a decision, or remove the blockage.</p></div></div></div></section>
+<section><div class="wrap split"><div><div class="kicker">Preserve the evidence</div><h2>The record behind the reminder.</h2><p style="color:var(--muted)">A clear Approval Record gives you a defensible decision history. Instead of saying “I thought someone confirmed that,” you can show the request, decision, date and responsible stakeholder.</p></div><div class="card"><h3>Approval Record</h3><div class="checklist"><div class="check"><b>✓</b><span><strong>Request</strong> — what was asked or sent.</span></div><div class="check"><b>✓</b><span><strong>Decision</strong> — approved, declined, revised, or still waiting.</span></div><div class="check"><b>✓</b><span><strong>Date</strong> — when the request or decision happened.</span></div><div class="check"><b>✓</b><span><strong>Stakeholder</strong> — who owns the decision.</span></div></div></div></div></section>
+<section class="band"><div class="wrap"><div class="center"><h2>Start the day from the record, not the loudest message.</h2><p>The Morning Coordination Review gives you one current operational view before the inbox sets your pace.</p></div><div class="four"><div class="field"><div class="num">01</div><h3>Gather</h3><p>Pull active questions, documents, approvals, payment details and deadlines.</p></div><div class="field"><div class="num">02</div><h3>Check</h3><p>Confirm owner, due date, current status and next step.</p></div><div class="field"><div class="num">03</div><h3>Sort</h3><p>Separate what can wait from what can block the schedule.</p></div><div class="field"><div class="num">04</div><h3>Update</h3><p>Draft stakeholder updates from the current view, not from memory.</p></div></div></div></section>
+<section id="bonus"><div class="wrap"><div class="center"><h2>Bonus working tools included.</h2><p>Use the book as an operating system, not just a read.</p></div><div class="grid3"><div class="card"><h3>Four Field Coordination Board Checklist</h3><p>Audit whether every active item has an owner, due date, status, next action, reminder point and escalation threshold.</p></div><div class="card"><h3>Message Triggers & Approval Records Worksheet</h3><p>Turn a branching vendor thread into a concise record with the exact item, due time, trigger, replies, risk and saved message draft.</p></div><div class="card"><h3>14-day implementation</h3><p>Run the system on live work each morning, sort every item, check the four fields and send only the messages the trigger requires.</p></div></div></div></section>
+<section class="final"><div class="wrap"><div class="cta"><div><h2>Make waiting visible, documented, and bounded by a next move.</h2><p>Get the guide and build a coordination system that reduces repeated checking and manual chasing.</p></div><a class="btn" style="background:white;color:#1d2428;border-color:white;min-width:180px" href="https://whop.com/event-planners-tracking-vendor-commitments-without-constant/event-planners-tracking-vendor-commitments-without-constant-chasing/" target="_blank" rel="noopener">Get the Book →</a></div></div></section>
+<footer><div class="wrap">© 2026 Vendor Coordination System. Product access is provided through Whop.</div></footer>
+</body></html>
